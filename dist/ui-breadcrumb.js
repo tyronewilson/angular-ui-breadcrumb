@@ -166,7 +166,7 @@
                                     if (shouldIncludeState(currentSref)) {
                                         return resolveBreadcrumbStep(currentSref).then(function (step) {
                                             if (step) {
-                                                steps.push(step);
+                                                steps.unshift(step);
                                             }
 
                                             currentSref = parentSref;
@@ -306,7 +306,7 @@ angular.module('ui.breadcrumb').run(['$templateCache', function($templateCache) 
 
   $templateCache.put('ui-breadcrumb/template/bootstrap3.html',
     "<ol class=\"breadcrumb\">\n" +
-    "    <li ng-repeat=\"step in vm.steps\" ng-class=\"{ active: $last }\" ng-switch=\"$last || !!step.abstract\">\n" +
+    "    <li ng-repeat=\"step in vm.steps\" ng-class=\"{ active: $last }\" ng-switch=\"!!step.abstract\">\n" +
     "        <a ng-switch-when=\"false\" ui-sref=\"{{ step.sref }}\" ui-sref-opts=\"step.stateOptions\">{{ step.label }}</a>\n" +
     "        <span ng-switch-when=\"true\">{{ step.label }}</span>\n" +
     "    </li>\n" +
