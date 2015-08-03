@@ -1,0 +1,32 @@
+{
+  "name": "ui-breadcrumb",
+  "version": "0.0.1",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "authors": [
+    "aramalipoor <aram.alipoor@gmail.com>"
+  ],
+  "description": "Automatic breadcrumb generation based on ui-router.",
+  "keywords": [
+    "angular",
+    "angular.js",
+    "breadcrumb",
+    "ui-router"
+  ],
+  "main": [
+    "dist/ui-breadcrumb.js"
+  ],
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "angular": "~1.3.17",
+    "angular-mocks": "~1.3.17",
+    "angular-route": "~1.3.17",
+    "angular-ui-router": "~0.2.15"
+  }
+}
