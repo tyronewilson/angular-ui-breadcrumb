@@ -10,7 +10,7 @@
             .state('ui.form.docs.guide.getting_started', {
                 url: '/getting-started',
                 templateUrl: 'ui-form/docs/guide/getting-started/template.html',
-                ncyBreadcrumb: {
+                breadcrumb: {
                     label: 'Getting Started'
                 }
             })
