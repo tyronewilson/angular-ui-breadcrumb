@@ -46,7 +46,7 @@
                                     if (shouldIncludeState(currentSref)) {
                                         return resolveBreadcrumbStep(currentSref).then(function (step) {
                                             if (step) {
-                                                steps.push(step);
+                                                steps.unshift(step);
                                             }
 
                                             currentSref = parentSref;
