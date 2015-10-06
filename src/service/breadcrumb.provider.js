@@ -97,7 +97,10 @@
                         }
 
                         config.breadcrumb = angular.extend({
-                            label: sref
+                            label: sref,
+                            stateOptions: {
+                                reload: true
+                            }
                         }, config.breadcrumb);
                     }
 
