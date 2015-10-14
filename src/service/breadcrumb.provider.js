@@ -17,8 +17,8 @@
         this.setOptions = setOptions;
 
         this.$get = [
-            '$q', '$state', '$$breadcrumbUtil',
-            function ($q, $state, $$breadcrumbUtil) {
+            '$q', '$state', '$stateParams', '$$breadcrumbUtil',
+            function ($q, $state, $stateParams, $$breadcrumbUtil) {
 
                 return {
                     getOption: getOption,
@@ -34,29 +34,34 @@
                 function getSteps() {
                     var d = $q.defer(),
                         steps = [],
-                        currentSref = $state.$current.self.name;
+                        currentSref = $state.$current.self.name,
+                        currentSrefParams = $stateParams;
 
                     $$breadcrumbUtil
                         .promiseWhile(
-                            function () {
-                                return !!currentSref;
-                            },
-                            function () {
-                                return getParentSref(currentSref).then(function (parentSref) {
+                        function () {
+                            return !!currentSref;
+                        },
+                        function () {
+                            return getParentSref(currentSref).then(function (parentSref) {
+                                return getParentSrefParams(currentSref).then(function (parentSrefParams) {
                                     if (shouldIncludeState(currentSref)) {
-                                        return resolveBreadcrumbStep(currentSref).then(function (step) {
+                                        return resolveBreadcrumbStep(currentSref, currentSrefParams).then(function (step) {
                                             if (step) {
                                                 steps.unshift(step);
                                             }
 
                                             currentSref = parentSref;
+                                            currentSrefParams = parentSrefParams;
                                         });
                                     } else {
                                         currentSref = parentSref;
+                                        currentSrefParams = parentSrefParams;
                                     }
                                 });
-                            }
-                        )
+                            });
+                        }
+                    )
                         .then(function () {
                             d.resolve(steps);
                         });
@@ -83,6 +88,24 @@
 
                     if (typeof sref === 'string') {
                         return $q.when((/^(.+)\.[^.]+$/.exec(sref) || [])[1]);
+                    }
+
+                    return $q.when(null);
+                }
+
+                function getParentSrefParams(sref) {
+                    var config = getStateConfig(sref);
+
+                    if (null === config) {
+                        return $q.when(null);
+                    }
+
+                    if (config.breadcrumb.parentParams) {
+                        if (typeof config.breadcrumb.parentParams === 'object') {
+                            return $q.when(config.breadcrumb.parentParams);
+                        }
+
+                        return $$breadcrumbUtil.resolve(config.breadcrumb.parentParams);
                     }
 
                     return $q.when(null);
@@ -132,11 +155,12 @@
                     return should;
                 }
 
-                function resolveBreadcrumbStep(sref) {
+                function resolveBreadcrumbStep(sref, params) {
                     var config = getStateConfig(sref),
                         labelPromise,
                         step = {
-                            sref: sref
+                            sref: sref,
+                            params: params || {}
                         };
 
                     if (null === config) {
