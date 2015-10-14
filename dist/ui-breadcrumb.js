@@ -73,13 +73,25 @@
             }
 
             if (typeof subject === 'function' || angular.isArray(subject)) {
-                subject = $injector.instantiate(subject);
+                subject = $injector.invoke(subject, null, resolveLocals());
             }
 
             if (angular.isObject(subject) && angular.isFunction(subject.then)) {
                 return subject;
             } else {
                 return $q.when(subject);
+            }
+
+            function resolveLocals() {
+                var locals = [],
+                    $state;
+
+                try {
+                    $state = $injector.get('$state');
+                    angular.extend(locals, $state.$current.locals.globals);
+                } catch (e) {}
+
+                return locals;
             }
         }
 
@@ -217,7 +229,10 @@
                         }
 
                         config.breadcrumb = angular.extend({
-                            label: sref
+                            label: sref,
+                            stateOptions: {
+                                reload: true
+                            }
                         }, config.breadcrumb);
                     }
 
