@@ -12,6 +12,11 @@ Using npm:
 npm install ui-breadcrumb --save
 ```
 
+Require the module in your angular module
+```javascript
+    angular.module('myApp', ['ui.breadcrumb]);
+```
+
 ## Usage
 Currently ui-breadcrumb provides a simple directive to render the breadcrumb.
 
