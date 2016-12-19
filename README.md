@@ -14,7 +14,7 @@ npm install ui-breadcrumb --save
 
 Require the module in your angular module
 ```javascript
-    angular.module('myApp', ['ui.breadcrumb]);
+    angular.module('myApp', ['ui.breadcrumb']);
 ```
 
 ## Usage
